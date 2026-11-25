@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.4dm text
+*.4DForm text
+*.json text
+*.png binary
+*.zip binary
+*.dylib binary
+*.exe binary
+*.svg text

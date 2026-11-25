@@ -1,0 +1,11 @@
+# Local component install: the demo declares Overlay in dependencies.json, so the
+# Dependency manager (or a fresh 4D open) may place a copy here.
+Components/
+# Local 4D user preferences created on first open.
+userPreferences.miyako/
+# Generated evidence and previews.
+build/
+# Overlay prebuilt archive kept for reference during development.
+Overlay.zip
+.DS_Store
+Project/DerivedData/

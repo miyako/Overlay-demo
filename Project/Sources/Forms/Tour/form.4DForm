@@ -1,0 +1,468 @@
+{
+	"$4d": {
+		"version": "1",
+		"kind": "form"
+	},
+	"windowSizingX": "fixed",
+	"windowSizingY": "fixed",
+	"windowMinWidth": 1020,
+	"windowMinHeight": 730,
+	"windowMaxWidth": 1020,
+	"windowMaxHeight": 730,
+	"width": 1020,
+	"height": 730,
+	"windowTitle": "Overlay Demo",
+	"destination": "detailScreen",
+	"events": [
+		"onLoad",
+		"onUnload"
+	],
+	"method": "method.4dm",
+	"pages": [
+		{
+			"objects": {
+				"headerBar": {
+					"type": "rectangle",
+					"left": 0,
+					"top": 0,
+					"width": 1020,
+					"height": 84,
+					"fill": "#F1F5F9",
+					"stroke": "#E2E8F0",
+					"strokeWidth": 1
+				},
+				"title": {
+					"type": "text",
+					"text": "Overlay Demo",
+					"left": 22,
+					"top": 12,
+					"width": 600,
+					"height": 30,
+					"fontSize": 20,
+					"bold": true,
+					"stroke": "#0F172A"
+				},
+				"subtitle": {
+					"type": "text",
+					"text": "Clickable cards pinned to a schematic island. The form never blocks.",
+					"left": 22,
+					"top": 44,
+					"width": 640,
+					"height": 20,
+					"fontSize": 12,
+					"stroke": "#475569"
+				},
+				"metaVersion": {
+					"type": "input",
+					"dataSource": "Form.metaVersion",
+					"left": 720,
+					"top": 10,
+					"width": 280,
+					"height": 16,
+					"dataSourceTypeHint": "text",
+					"enterable": false,
+					"focusable": false,
+					"textAlign": "right",
+					"fontSize": 11,
+					"stroke": "#334155",
+					"borderStyle": "none"
+				},
+				"metaScreen": {
+					"type": "input",
+					"dataSource": "Form.metaScreen",
+					"left": 720,
+					"top": 30,
+					"width": 280,
+					"height": 16,
+					"dataSourceTypeHint": "text",
+					"enterable": false,
+					"focusable": false,
+					"textAlign": "right",
+					"fontSize": 11,
+					"stroke": "#334155",
+					"borderStyle": "none"
+				},
+				"metaCap": {
+					"type": "input",
+					"dataSource": "Form.metaCap",
+					"left": 720,
+					"top": 50,
+					"width": 280,
+					"height": 16,
+					"dataSourceTypeHint": "text",
+					"enterable": false,
+					"focusable": false,
+					"textAlign": "right",
+					"fontSize": 11,
+					"stroke": "#334155",
+					"borderStyle": "none"
+				},
+				"headerLine": {
+					"type": "line",
+					"left": 20,
+					"top": 84,
+					"width": 980,
+					"height": 0,
+					"stroke": "#CBD5E1"
+				},
+				"poiGroup": {
+					"type": "groupBox",
+					"text": "Points of interest",
+					"left": 20,
+					"top": 100,
+					"width": 360,
+					"height": 304,
+					"stroke": "#CBD5E1"
+				},
+				"poiList": {
+					"type": "listbox",
+					"listboxType": "collection",
+					"dataSource": "Form.pois",
+					"currentItemSource": "Form.selected",
+					"left": 32,
+					"top": 124,
+					"width": 336,
+					"height": 160,
+					"rowHeight": "24px",
+					"resizingMode": "legacy",
+					"verticalAlign": "middle",
+					"events": [
+						"onSelectionChange"
+					],
+					"method": "ObjectMethods/poiList.4dm",
+					"columns": [
+						{
+							"name": "colIndex",
+							"dataSource": "This.index",
+							"dataSourceTypeHint": "integer",
+							"width": 36,
+							"minWidth": 32,
+							"truncateMode": "none",
+							"header": {
+								"name": "hdrIndex",
+								"text": "#"
+							},
+							"footer": {
+								"name": "ftrIndex",
+								"truncateMode": "none"
+							}
+						},
+						{
+							"name": "colName",
+							"dataSource": "This.name",
+							"dataSourceTypeHint": "text",
+							"width": 284,
+							"minWidth": 180,
+							"truncateMode": "none",
+							"header": {
+								"name": "hdrName",
+								"text": "Point of interest"
+							},
+							"footer": {
+								"name": "ftrName",
+								"truncateMode": "none"
+							}
+						}
+					]
+				},
+				"blurbLabel": {
+					"type": "text",
+					"text": "Field notes",
+					"left": 32,
+					"top": 292,
+					"width": 336,
+					"height": 16,
+					"fontSize": 11,
+					"bold": true,
+					"stroke": "#64748B"
+				},
+				"poiBlurb": {
+					"type": "input",
+					"dataSource": "Form.blurb",
+					"left": 32,
+					"top": 310,
+					"width": 336,
+					"height": 82,
+					"dataSourceTypeHint": "text",
+					"enterable": false,
+					"focusable": true,
+					"multiline": "yes",
+					"wordwrap": "normal",
+					"fontSize": 12,
+					"stroke": "#0F172A"
+				},
+				"overlayGroup": {
+					"type": "groupBox",
+					"text": "Overlay options",
+					"left": 20,
+					"top": 416,
+					"width": 360,
+					"height": 196,
+					"stroke": "#CBD5E1"
+				},
+				"clickableMode": {
+					"type": "checkbox",
+					"text": "Clickable (otherwise passive)",
+					"dataSource": "Form.clickable",
+					"dataSourceTypeHint": "boolean",
+					"left": 32,
+					"top": 438,
+					"width": 320,
+					"height": 20,
+					"events": []
+				},
+				"useBlob": {
+					"type": "checkbox",
+					"text": "Send bytes with showBlob()",
+					"dataSource": "Form.useBlob",
+					"dataSourceTypeHint": "boolean",
+					"left": 32,
+					"top": 462,
+					"width": 320,
+					"height": 20,
+					"events": []
+				},
+				"timeoutLabel": {
+					"type": "text",
+					"text": "Timeout (ms)",
+					"left": 32,
+					"top": 492,
+					"width": 96,
+					"height": 18,
+					"fontSize": 11,
+					"stroke": "#334155"
+				},
+				"timeoutMs": {
+					"type": "input",
+					"dataSource": "Form.timeoutMs",
+					"left": 130,
+					"top": 490,
+					"width": 62,
+					"height": 22,
+					"dataSourceTypeHint": "integer",
+					"numberFormat": "#"
+				},
+				"fadeLabel": {
+					"type": "text",
+					"text": "Fade (ms)",
+					"left": 206,
+					"top": 492,
+					"width": 80,
+					"height": 18,
+					"fontSize": 11,
+					"stroke": "#334155"
+				},
+				"fadeMs": {
+					"type": "input",
+					"dataSource": "Form.fadeMs",
+					"left": 290,
+					"top": 490,
+					"width": 62,
+					"height": 22,
+					"dataSourceTypeHint": "integer",
+					"numberFormat": "#"
+				},
+				"opacityLabel": {
+					"type": "text",
+					"text": "Opacity (%)",
+					"left": 32,
+					"top": 520,
+					"width": 96,
+					"height": 18,
+					"fontSize": 11,
+					"stroke": "#334155"
+				},
+				"opacity": {
+					"type": "input",
+					"dataSource": "Form.opacity",
+					"left": 130,
+					"top": 518,
+					"width": 62,
+					"height": 22,
+					"dataSourceTypeHint": "integer",
+					"numberFormat": "#"
+				},
+				"optionHint": {
+					"type": "text",
+					"text": "0 ms timeout = untimed. Opacity is clamped to 10-100%.",
+					"left": 206,
+					"top": 516,
+					"width": 166,
+					"height": 40,
+					"fontSize": 10,
+					"stroke": "#64748B"
+				},
+				"showButton": {
+					"type": "button",
+					"text": "Show overlay",
+					"left": 32,
+					"top": 556,
+					"width": 108,
+					"height": 30,
+					"events": [
+						"onClick"
+					],
+					"method": "ObjectMethods/showButton.4dm",
+					"focusable": false
+				},
+				"cancelButton": {
+					"type": "button",
+					"text": "Cancel",
+					"left": 148,
+					"top": 556,
+					"width": 96,
+					"height": 30,
+					"events": [
+						"onClick"
+					],
+					"method": "ObjectMethods/cancelButton.4dm",
+					"focusable": false
+				},
+				"resetButton": {
+					"type": "button",
+					"text": "Reset marks",
+					"left": 252,
+					"top": 556,
+					"width": 108,
+					"height": 30,
+					"events": [
+						"onClick"
+					],
+					"method": "ObjectMethods/resetButton.4dm",
+					"focusable": false
+				},
+				"mapGroup": {
+					"type": "groupBox",
+					"text": "Island map",
+					"left": 400,
+					"top": 100,
+					"width": 600,
+					"height": 496,
+					"stroke": "#CBD5E1"
+				},
+				"map": {
+					"type": "input",
+					"dataSource": "Form.mapPicture",
+					"left": 412,
+					"top": 124,
+					"width": 584,
+					"height": 420,
+					"dataSourceTypeHint": "picture",
+					"pictureFormat": "scaled",
+					"dragging": "none",
+					"dropping": "none",
+					"borderStyle": "none",
+					"events": [
+						"onClick"
+					],
+					"method": "ObjectMethods/map.4dm"
+				},
+				"mapHint": {
+					"type": "text",
+					"text": "Numbered circles are the POIs. Cards are anchored to the marker, not the window centre.",
+					"left": 412,
+					"top": 552,
+					"width": 584,
+					"height": 16,
+					"fontSize": 10,
+					"stroke": "#64748B"
+				},
+				"centerButton": {
+					"type": "button",
+					"text": "At screen centre",
+					"left": 412,
+					"top": 572,
+					"width": 150,
+					"height": 30,
+					"events": [
+						"onClick"
+					],
+					"method": "ObjectMethods/centerButton.4dm",
+					"focusable": false
+				},
+				"errorButton": {
+					"type": "button",
+					"text": "Break it (fragmented)",
+					"left": 570,
+					"top": 572,
+					"width": 180,
+					"height": 30,
+					"events": [
+						"onClick"
+					],
+					"method": "ObjectMethods/errorButton.4dm",
+					"focusable": false
+				},
+				"copyButton": {
+					"type": "button",
+					"text": "Copy JSON",
+					"left": 758,
+					"top": 572,
+					"width": 120,
+					"height": 30,
+					"events": [
+						"onClick"
+					],
+					"method": "ObjectMethods/copyButton.4dm",
+					"focusable": false
+				},
+				"statusGroup": {
+					"type": "groupBox",
+					"text": "Status",
+					"left": 20,
+					"top": 628,
+					"width": 980,
+					"height": 88,
+					"stroke": "#CBD5E1"
+				},
+				"statusText": {
+					"type": "input",
+					"dataSource": "Form.status",
+					"left": 32,
+					"top": 648,
+					"width": 860,
+					"height": 58,
+					"dataSourceTypeHint": "text",
+					"enterable": false,
+					"focusable": true,
+					"multiline": "yes",
+					"wordwrap": "normal",
+					"fontSize": 12,
+					"stroke": "#0F172A"
+				},
+				"visitedText": {
+					"type": "input",
+					"dataSource": "Form.visitedText",
+					"left": 900,
+					"top": 648,
+					"width": 88,
+					"height": 18,
+					"dataSourceTypeHint": "text",
+					"enterable": false,
+					"focusable": false,
+					"textAlign": "right",
+					"fontSize": 11,
+					"stroke": "#334155",
+					"borderStyle": "none"
+				}
+			},
+			"entryOrder": [
+				"poiList",
+				"clickableMode",
+				"useBlob",
+				"timeoutMs",
+				"fadeMs",
+				"opacity",
+				"showButton",
+				"cancelButton",
+				"resetButton",
+				"centerButton",
+				"errorButton",
+				"copyButton"
+			]
+		},
+		{
+			"objects": {}
+		}
+	]
+}

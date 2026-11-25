@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE base SYSTEM "http://www.4d.com/dtd/2007/base.dtd">
+<base name="OverlayDemo" uuid="9646C976232E4E20B0B7CB6443E983E4" collation_locale="en">
+  <schema name="DEFAULT_SCHEMA"/>
+  <base_extra><journal_file journal_file_enabled="false"/></base_extra>
+</base>
