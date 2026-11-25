@@ -11,6 +11,7 @@ var $screen : Object
 var $modes : Collection
 var $i : Integer
 
+$previous:=Method called on error(ek local)
 ON ERR CALL("Tour_error_capture"; ek local)
 $overlay:=cs.Overlay.Overlay.new(Tour_target)
 

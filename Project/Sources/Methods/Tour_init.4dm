@@ -31,8 +31,10 @@ Case of
 		Form.metaCap:="PNG ..."
 		Form.visitedText:="0 of 7 visited"
 
-		Storage.tourWindow:=Current form window
-		Storage.tourOpen:=True
+		Use (Storage)
+			Storage.tourWindow:=Current form window
+			Storage.tourOpen:=True
+		End use
 
 		Tour_metadata
 		Tour_refresh
@@ -40,7 +42,9 @@ Case of
 		OBJECT SET ENABLED(*; "cancelButton"; False)
 
 	: (FORM Event.code=On Unload)
-		Storage.tourOpen:=False
+		Use (Storage)
+			Storage.tourOpen:=False
+		End use
 		If (Form.overlay#Null)
 			Form.overlay.cancel()
 		End if

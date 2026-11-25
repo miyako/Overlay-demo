@@ -43,7 +43,7 @@ $build.file("smoke-component-step.txt").setText("capabilities")
 $checks.push(New object("name"; "component.capabilities"; "status"; Smoke_status(($caps#Null) & $caps.ok & ($caps.value.protocol=1)); "detail"; "modes "+String($caps.value.modes.length)+", format "+String($caps.value.format)))
 
 // Real display: passive card with a short timeout, then poll the handle.
-var $handle : cs.OverlayHandle
+var $handle : cs.Overlay.OverlayHandle
 var $options; $outcome : Object
 var $card : 4D.File
 var $waited : Integer

@@ -1,4 +1,4 @@
-// Tour_on_startup — database method: open the demo window.
+// onStartup — database method: open the demo window.
 //
 // Skipped by the Smoke run (tool4d --skip-onstartup).
 
