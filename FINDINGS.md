@@ -81,17 +81,23 @@ loaded". Here the latter was `passed`.
 
 ## 4. The LSP cannot see components
 
-`tools/4dlsp` on this project reports exactly the expected set:
+`tools/4dlsp` on this project reports exactly the expected set: the class
+lookups fail, and every member access on those unknown types follows as a
+warning.
 
 ```
-Tour_metadata.4dm:6:6: error: The class cs.Overlay.Overlay is unknown.
-Tour_display.4dm:10:6: error: The class cs.Overlay.OverlayHandle is unknown.
+error:   The class cs.Overlay is unknown.
+error:   The class cs.Overlay.Overlay is unknown.
+error:   The class cs.Overlay.OverlayHandle is unknown.
+warning: The function or property version does not exist on type cs.Overlay.Overlay. (550.2)
+warning: Undeclared property 'done' used. (550.26)
 ```
 
-No other diagnostics remain. That is not a syntax failure to fix — the compiler
-and runtime resolve the component; the language server does not analyse
-`Components/`. Budget for these known errors when using `check-syntax` as a gate,
-and never "fix" them with dummy classes in the project.
+No diagnostics remain on project-owned code. That is not a syntax failure to
+fix — the interpreter resolves the component; the language server does not
+analyse `Components/`. Budget for these known errors when using `check-syntax`
+as a gate, and never "fix" them with dummy classes, or by loosening a
+`cs.Overlay.*` type to `Object` merely to silence the warnings.
 
 ## 5. 4D language traps that cost real time
 
@@ -113,6 +119,17 @@ and never "fix" them with dummy classes in the project.
   Declare `$pois : Collection`.
 * **No ternary.** `If(cond; a; b)` is not a function. A tiny `Smoke_status`
   method that maps a Boolean to `"passed"/"failed"` is the least noisy fix.
+* **`Storage` writes need `Use`.** Assigning to an undeclared `Storage` member —
+  or writing without a `Use (Storage)` block on a shared storage object — raises
+  `[-10719] Shared Object needs a "Use" before altering a property` and the
+  method continues. Wrap reads/writes in `Use (Storage) ... End use` in form and
+  worker code.
+* **`tokenizedText` must be `false`** in `Project/Name.4DProject` when the code
+  is written by an agent: otherwise the IDE expects token suffixes on commands.
+  With `false`, plain command names are correct and survive the compiler.
+* **Capture the previous error handler before overriding it.**
+  `Method called on error(ek local)` returns the current handler name; restore
+  it with `ON ERR CALL($previous; ek local)` instead of assuming none was set.
 * **`Position`'s 4th argument is a length, not an occurrence count.**
   `Position("poi_"; $svg; 1; 7)` does not count 7 markers; it searched 7
   characters. Count with repeated calls if needed.
@@ -153,7 +170,8 @@ does) and never invent a shared PID map.
 
 ## 8. Proposed skills edits
 
-Offered as a PR to `miyako/skills`; each one is grounded in an observation above.
+Offered as [miyako/skills#81](https://github.com/miyako/skills/pull/81); each one is
+grounded in an observation above.
 
 | Skill | Proposed addition |
 | --- | --- |
@@ -161,8 +179,8 @@ Offered as a PR to `miyako/skills`; each one is grounded in an observation above
 | `4dcli` | Note that `PackageManager ... Dependency 'X' cannot be found` can appear while `Components/X.4dbase` still loads and component classes work — do not classify that log line as a failure. |
 | `4dcli` | Add the SVG rasterizer gap: `SVG EXPORT TO PICTURE` under tool4d fails with `-9926` / `The XML command cannot be executed` and yields a 0-byte picture; rasterisation checks belong to a GUI run (`not_run` headless). Add the observation that a failing XML/SVG command earlier in the same headless method can make later component/SystemWorker calls abort uncatchably. |
 | `4dproject` | Note that `fourdform` previews show picture inputs blank when their `dataSource` is bound at runtime; that is expected and not a form defect. |
-| `4dmethods` / `4dlang` | A short "4D is not JavaScript" list: no static members, no `Class` keyword line, `Round(expr; places)`, array-only `Min`/`Max`, no ternary, `Position`'s 4th argument is a length, typed variables reject mismatched types with `[15]` and continue with Null. |
-| `4dlsp` | Confirm that component classes are unresolvable by design and list the resulting expected diagnostics, so `check-syntax` output can be triaged without chasing them. |
+| `4dmethods` / `4dlang` | A short "4D is not JavaScript" list: no static members, no `Class` keyword line, `Round(expr; places)`, array-only `Min`/`Max`, no ternary, `Position`'s 4th argument is a length, typed variables reject mismatched types with `[15]` and continue with Null, `Storage` writes need `Use (Storage)`, and `tokenizedText:false` is required for agent-written code. |
+| `4dlsp` | Confirm that component classes are unresolvable by design and list the resulting expected diagnostics — the class errors *and* the follow-on "does not exist on type" / "undeclared property" warnings — so `check-syntax` output can be triaged without chasing them or weakening real types to `Object`. |
 
 ## 9. What the next session should attack
 

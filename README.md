@@ -105,8 +105,15 @@ silent abort shows which call was reached.
 Totals: `build/smoke.json` 12 passed / 0 failed / 3 not_run, `finished: true`;
 `build/smoke-component.json` 4 passed / 0 failed, `finished: true`.
 Static validation: `tools/4dlsp/tool4d-lsp-stdio check-syntax --workspace Project/`
-reports **only** the expected `cs.Overlay.*` unknown-class errors (the LSP cannot
-see components); `tools/4dform/boon` validates the form against the 4D form schema.
+reports nothing except the diagnostics the LSP cannot avoid for an unresolvable
+component — `The class cs.Overlay.* is unknown` plus follow-on
+"does not exist on type / undeclared property" warnings on the same lines.
+`tools/4dform/boon` validates the form against the 4D form schema.
+
+The tools in `tools/` are provisioned, not vendored: the skills' `4dtools` skill
+installs the pinned `boon`, `fourdform`, `tool4d-lsp-stdio` and language bundles,
+and `.gitignore` keeps those binaries out of the repository. Run `4dtools` first
+if a command below reports a missing executable.
 
 ### Not verified here
 
@@ -127,8 +134,10 @@ Project/                 the 4D project (Project/Sources/...)
   Sources/Methods/Tour_*.4dm           form logic, overlay calls, error capture
   Sources/Methods/Smoke*.4dm           headless acceptance + status/error helpers
 Resources/Overlay/       generated card PNGs and the fragmented sample
-tools/                   pinned 4D skills tools (4dform, 4dlsp, language bundles)
 tools/assets/make_assets.py          regenerates the PNGs with Pillow
+tools/<name>/            4D skills tools, provisioned by the 4dtools skill
+                         (git-ignored: boon, fourdform, tool4d-lsp-stdio,
+                         4d-language-classic/oop)
 docs/                    design-time form preview
 .agents/                 miyako/skills submodule (development guidance)
 ```
