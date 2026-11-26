@@ -1,0 +1,25 @@
+/* Colours live here, not in form.4DForm, so they follow the system appearance. */
+
+@media (prefers-color-scheme: light) {
+	.header-bar, rectangle.header-bar { fill: #F1F5F9; stroke: #E2E8F0; }
+	.title, text.title { stroke: #0F172A; }
+	.subtitle, text.subtitle { stroke: #475569; }
+	.rule, line.rule { stroke: #CBD5E1; }
+	.group, groupBox.group { stroke: #CBD5E1; }
+	.label, text.label { stroke: #334155; }
+	.hint, text.hint { stroke: #64748B; }
+	.body, input.body { stroke: #0F172A; }
+	.meta, input.meta { stroke: #334155; }
+}
+
+@media (prefers-color-scheme: dark) {
+	.header-bar, rectangle.header-bar { fill: #1E293B; stroke: #334155; }
+	.title, text.title { stroke: #F1F5F9; }
+	.subtitle, text.subtitle { stroke: #CBD5E1; }
+	.rule, line.rule { stroke: #475569; }
+	.group, groupBox.group { stroke: #475569; }
+	.label, text.label { stroke: #E2E8F0; }
+	.hint, text.hint { stroke: #94A3B8; }
+	.body, input.body { stroke: #F1F5F9; }
+	.meta, input.meta { stroke: #E2E8F0; }
+}

@@ -93,7 +93,7 @@ silent abort shows which call was reached.
 | `registry.find.hit` / `.miss` | passed | `find("tidepools")`, `find("nowhere")` → Null |
 | `registry.nearest.hit` / `.miss` | passed | `(0.22, 0.62)` → `tidepools`; `(0.99, 0.01)` → Null |
 | `svg.render` / `svg.markers` | passed | 4154-char SVG, first/middle/last marker ids present |
-| `svg.to.picture` | not_run | `Picture size = 0` — tool4d has no SVG rasterizer |
+| `svg.to.picture` | passed | `Picture size` > 0 after `DOM Parse XML variable` |
 | `geometry.desktopPoint` / `.cardTopLeft` / `.clamp` | passed | `360, 270`; `210, 94`; `8, 819` |
 | `form.json` | passed | 2 pages, `method.4dm` |
 | `assets` | passed | 7 card PNGs + fragmented sample present and non-trivial |
@@ -102,7 +102,7 @@ silent abort shows which call was reached.
 | `component.capabilities` | passed | 2 modes, PNG |
 | `component.show` | passed | passive card, `outcome: dismissed`, `reason: timeout` |
 
-Totals: `build/smoke.json` 12 passed / 0 failed / 3 not_run, `finished: true`;
+Totals: `build/smoke.json` 15 passed / 0 failed / 2 not_run, `finished: true`;
 `build/smoke-component.json` 4 passed / 0 failed, `finished: true`.
 Static validation: `tools/4dlsp/tool4d-lsp-stdio check-syntax --workspace Project/`
 reports nothing except the diagnostics the LSP cannot avoid for an unresolvable

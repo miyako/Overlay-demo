@@ -32,28 +32,31 @@ clickable overlay and surfaces the diagnostic in the status panel.
 Takeaway: design clickable overlays as a handful of solid shapes. Detailed art
 belongs in a passive overlay; put invisible clickable regions on top if needed.
 
-## 2. tool4d has no SVG rasterizer, and it can disturb later native calls
+## 2. `SVG EXPORT TO PICTURE` takes an XML tree reference, not SVG text
 
-`SVG EXPORT TO PICTURE` fails under `tool4d`:
+An earlier version of this note blamed a missing SVG rasterizer in `tool4d`. That
+was wrong: the same call also failed in the GUI form (the map stayed blank) with
 
 ```
-tool4d.4DRT [-9926] The referenced element is invalid.
-action_description: "The XML command cannot be executed"
+[-9926] The referenced element is invalid.   (The XML command cannot be executed)
 Picture size(...) = 0
 ```
 
-The same SVG is well-formed (`xmllint --noout` passes) and Quick Look renders it,
-so this is a missing GUI/SVG renderer in the headless tool, not a malformed
-document. In the GUI form the call works and the map appears.
+The first argument is a DOM reference, but the code passed the SVG source text,
+which compiles because a reference is also a Text. Parse first, then export and
+close:
 
-Worse, the failure is not clean. Calls into the compiled Overlay component made
-*after* an `SVG EXPORT TO PICTURE` in the same startup method sometimes aborted
-the method with no catchable error (`ON ERR CALL` never fired, `QUIT 4D` never
-ran, exit code 0). Isolating the component checks in `SmokeComponent`, with no
-SVG export in the same process, succeeded 4/4 runs. Treat that as a strong
-correlation, not a proven mechanism — but the practical rule is simple: **do not
-mix a known-failing XML/SVG call and component `SystemWorker` calls in one
-headless run.**
+```4d
+$dom:=DOM Parse XML variable($svg)
+SVG EXPORT TO PICTURE($dom; $picture)
+DOM CLOSE XML($dom)
+```
+
+With that change `svg.to.picture` passes headless (`Picture size` > 0), so the
+check is no longer `not_run`. The earlier observation that component calls
+sometimes aborted a startup method *after* the failing export is probably the
+same unhandled error, not a separate hazard; `SmokeComponent` stays a separate
+method anyway because it is cheap insurance.
 
 Related: the component itself spawns SystemWorkers, and `handle.result` returns
 the whole completion envelope (`ok/stdout/stderr/exitCode/value`), *not* the
@@ -119,6 +122,10 @@ as a gate, and never "fix" them with dummy classes, or by loosening a
   Declare `$pois : Collection`.
 * **No ternary.** `If(cond; a; b)` is not a function. A tiny `Smoke_status`
   method that maps a Boolean to `"passed"/"failed"` is the least noisy fix.
+* **`Storage` properties can only be shared objects, shared collections or null.**
+  `Storage.flag:=True` fails even inside `Use (Storage)` with `A property of Storage
+  can only be a shared object, a shared collection or null`. Keep scalars in one
+  shared object: `Storage.tour:=New shared object("open"; True)`.
 * **`Storage` writes need `Use`.** Assigning to an undeclared `Storage` member —
   or writing without a `Use (Storage)` block on a shared storage object — raises
   `[-10719] Shared Object needs a "Use" before altering a property` and the
@@ -136,6 +143,10 @@ as a gate, and never "fix" them with dummy classes, or by loosening a
 * **`Picture size()` returns bytes only** in this compiler; there is no
   width/height overload.
 * **`var $x : Text array` is invalid**; use `ARRAY TEXT($x; 0)`.
+* **Operators evaluate left to right, no precedence.** `$lx>$width-176` is
+  `($lx>$width)-176` and raises `[15]`; write `$lx>($width-176)`.
+* **`For each` needs a collection or object.** `ARRAY TEXT` + `OB GET PROPERTY NAMES`
+  gives an array; use `OB Keys($o)`.
 * **Booleans do not short-circuit for type-sensitive work.** `($v#Null) & $v.ok`
   is fine for Objects here, but guard `Value type` before comparing variants when
   a Null is possible.
@@ -177,7 +188,7 @@ grounded in an observation above.
 | --- | --- |
 | `4dproject` | A "consuming a GitHub component" section: exact `dependencies.json` descriptor (`dependencies.NAME.github` + `version` or `tag`), the documented priority order (`Components/` > `dependencies.json` > built-in), and that the file must exist before the first headless open. |
 | `4dcli` | Note that `PackageManager ... Dependency 'X' cannot be found` can appear while `Components/X.4dbase` still loads and component classes work — do not classify that log line as a failure. |
-| `4dcli` | Add the SVG rasterizer gap: `SVG EXPORT TO PICTURE` under tool4d fails with `-9926` / `The XML command cannot be executed` and yields a 0-byte picture; rasterisation checks belong to a GUI run (`not_run` headless). Add the observation that a failing XML/SVG command earlier in the same headless method can make later component/SystemWorker calls abort uncatchably. |
+| `4dcli` | SVG: `SVG EXPORT TO PICTURE` under tool4d fails with `-9926` / `The XML command cannot be executed` and yields a 0-byte picture; the first argument must be a DOM reference (`DOM Parse XML variable`), not SVG text; with a reference the export works headless. Drop the "no rasterizer" claim. |
 | `4dproject` | Note that `fourdform` previews show picture inputs blank when their `dataSource` is bound at runtime; that is expected and not a form defect. |
 | `4dmethods` / `4dlang` | A short "4D is not JavaScript" list: no static members, no `Class` keyword line, `Round(expr; places)`, array-only `Min`/`Max`, no ternary, `Position`'s 4th argument is a length, typed variables reject mismatched types with `[15]` and continue with Null, `Storage` writes need `Use (Storage)`, and `tokenizedText:false` is required for agent-written code. |
 | `4dlsp` | Confirm that component classes are unresolvable by design and list the resulting expected diagnostics — the class errors *and* the follow-on "does not exist on type" / "undeclared property" warnings — so `check-syntax` output can be triaged without chasing them or weakening real types to `Object`. |
@@ -197,7 +208,7 @@ grounded in an observation above.
 
 | Path | Content |
 | --- | --- |
-| `build/smoke.json` | 12 passed / 0 failed / 3 not_run, `finished: true` |
+| `build/smoke.json` | 15 passed / 0 failed / 2 not_run, `finished: true` |
 | `build/smoke-component.json` | 4 passed / 0 failed, `finished: true` |
 | `build/smoke-component-step.txt` | last component step reached (`done`) |
 | `build/tour-preview.png` | design-time form render |

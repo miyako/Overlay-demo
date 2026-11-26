@@ -47,7 +47,11 @@ $svg:=$reg.svg("tidepools"; New object())
 $checks.push(New object("name"; "svg.render"; "status"; Smoke_status((Position("<svg"; $svg)=1) & (Position("poi_tidepools"; $svg)>0) & (Length($svg)>3000)); "detail"; String(Length($svg))+" chars"))
 $checks.push(New object("name"; "svg.markers"; "status"; Smoke_status((Position("poi_tidepools"; $svg)>0) & (Position("poi_night_market"; $svg)>0) & (Position("poi_copper_mine"; $svg)>0)); "detail"; "marker ids for first, middle and last POI"))
 $picture:=$reg.picture("tidepools"; New object())
-$checks.push(New object("name"; "svg.to.picture"; "status"; "not_run"; "detail"; "tool4d has no SVG rasterizer (Picture size="+String(Picture size($picture))+"); exercised by the GUI form instead"))
+$checks.push(New object("name"; "svg.to.picture"; "status"; Smoke_status(Picture size($picture)>0); "detail"; "Picture size="+String(Picture size($picture))+" bytes"))
+$check:=New object("tidepools"; True; "lighthouse"; True; "whale_pier"; False)
+$checks.push(New object("name"; "registry.visitedCount"; "status"; Smoke_status(($reg.visitedCount($check)=2) & ($reg.visitedCount(Null)=0)); "detail"; "2 visited of 3 keys"))
+$svg:=$reg.svg("night_market"; New object())
+$checks.push(New object("name"; "svg.label.clamp"; "status"; Smoke_status(Length($svg)>3000); "detail"; "label near the right edge renders"))
 
 // TourGeometry: pure Integer arithmetic in screen coordinates.
 $position:=cs.TourGeometry.new().desktopPoint(100; 50; 10; 20; 500; 400; 0.5; 0.5)

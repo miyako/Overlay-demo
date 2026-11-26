@@ -31,9 +31,9 @@ Case of
 		Form.metaCap:="PNG ..."
 		Form.visitedText:="0 of 7 visited"
 
+		// Storage properties must be shared objects: keep the flags in one.
 		Use (Storage)
-			Storage.tourWindow:=Current form window
-			Storage.tourOpen:=True
+			Storage.tour:=New shared object("window"; Current form window; "open"; True)
 		End use
 
 		Tour_metadata
@@ -42,9 +42,11 @@ Case of
 		OBJECT SET ENABLED(*; "cancelButton"; False)
 
 	: (FORM Event.code=On Unload)
-		Use (Storage)
-			Storage.tourOpen:=False
-		End use
+		If (Storage.tour#Null)
+			Use (Storage.tour)
+				Storage.tour.open:=False
+			End use
+		End if
 		If (Form.overlay#Null)
 			Form.overlay.cancel()
 		End if

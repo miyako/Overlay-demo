@@ -27,9 +27,8 @@
 					"top": 0,
 					"width": 1020,
 					"height": 84,
-					"fill": "#F1F5F9",
-					"stroke": "#E2E8F0",
-					"strokeWidth": 1
+					"strokeWidth": 1,
+					"class": "header-bar"
 				},
 				"title": {
 					"type": "text",
@@ -40,7 +39,7 @@
 					"height": 30,
 					"fontSize": 20,
 					"bold": true,
-					"stroke": "#0F172A"
+					"class": "title"
 				},
 				"subtitle": {
 					"type": "text",
@@ -50,7 +49,7 @@
 					"width": 640,
 					"height": 20,
 					"fontSize": 12,
-					"stroke": "#475569"
+					"class": "subtitle"
 				},
 				"metaVersion": {
 					"type": "input",
@@ -64,8 +63,8 @@
 					"focusable": false,
 					"textAlign": "right",
 					"fontSize": 11,
-					"stroke": "#334155",
-					"borderStyle": "none"
+					"borderStyle": "none",
+					"class": "meta"
 				},
 				"metaScreen": {
 					"type": "input",
@@ -79,8 +78,8 @@
 					"focusable": false,
 					"textAlign": "right",
 					"fontSize": 11,
-					"stroke": "#334155",
-					"borderStyle": "none"
+					"borderStyle": "none",
+					"class": "meta"
 				},
 				"metaCap": {
 					"type": "input",
@@ -94,8 +93,8 @@
 					"focusable": false,
 					"textAlign": "right",
 					"fontSize": 11,
-					"stroke": "#334155",
-					"borderStyle": "none"
+					"borderStyle": "none",
+					"class": "meta"
 				},
 				"headerLine": {
 					"type": "line",
@@ -103,7 +102,7 @@
 					"top": 84,
 					"width": 980,
 					"height": 0,
-					"stroke": "#CBD5E1"
+					"class": "rule"
 				},
 				"poiGroup": {
 					"type": "groupBox",
@@ -112,7 +111,7 @@
 					"top": 100,
 					"width": 360,
 					"height": 304,
-					"stroke": "#CBD5E1"
+					"class": "group"
 				},
 				"poiList": {
 					"type": "listbox",
@@ -174,7 +173,7 @@
 					"height": 16,
 					"fontSize": 11,
 					"bold": true,
-					"stroke": "#64748B"
+					"class": "hint"
 				},
 				"poiBlurb": {
 					"type": "input",
@@ -189,7 +188,7 @@
 					"multiline": "yes",
 					"wordwrap": "normal",
 					"fontSize": 12,
-					"stroke": "#0F172A"
+					"class": "body"
 				},
 				"overlayGroup": {
 					"type": "groupBox",
@@ -198,7 +197,7 @@
 					"top": 416,
 					"width": 360,
 					"height": 196,
-					"stroke": "#CBD5E1"
+					"class": "group"
 				},
 				"clickableMode": {
 					"type": "checkbox",
@@ -230,7 +229,7 @@
 					"width": 96,
 					"height": 18,
 					"fontSize": 11,
-					"stroke": "#334155"
+					"class": "label"
 				},
 				"timeoutMs": {
 					"type": "input",
@@ -250,7 +249,7 @@
 					"width": 80,
 					"height": 18,
 					"fontSize": 11,
-					"stroke": "#334155"
+					"class": "label"
 				},
 				"fadeMs": {
 					"type": "input",
@@ -270,7 +269,7 @@
 					"width": 96,
 					"height": 18,
 					"fontSize": 11,
-					"stroke": "#334155"
+					"class": "label"
 				},
 				"opacity": {
 					"type": "input",
@@ -290,7 +289,7 @@
 					"width": 166,
 					"height": 40,
 					"fontSize": 10,
-					"stroke": "#64748B"
+					"class": "hint"
 				},
 				"showButton": {
 					"type": "button",
@@ -338,7 +337,7 @@
 					"top": 100,
 					"width": 600,
 					"height": 496,
-					"stroke": "#CBD5E1"
+					"class": "group"
 				},
 				"map": {
 					"type": "input",
@@ -365,7 +364,7 @@
 					"width": 584,
 					"height": 16,
 					"fontSize": 10,
-					"stroke": "#64748B"
+					"class": "hint"
 				},
 				"centerButton": {
 					"type": "button",
@@ -413,7 +412,7 @@
 					"top": 628,
 					"width": 980,
 					"height": 88,
-					"stroke": "#CBD5E1"
+					"class": "group"
 				},
 				"statusText": {
 					"type": "input",
@@ -428,7 +427,7 @@
 					"multiline": "yes",
 					"wordwrap": "normal",
 					"fontSize": 12,
-					"stroke": "#0F172A"
+					"class": "body"
 				},
 				"visitedText": {
 					"type": "input",
@@ -442,8 +441,8 @@
 					"focusable": false,
 					"textAlign": "right",
 					"fontSize": 11,
-					"stroke": "#334155",
-					"borderStyle": "none"
+					"borderStyle": "none",
+					"class": "meta"
 				}
 			},
 			"entryOrder": [

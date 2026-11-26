@@ -98,7 +98,7 @@ Function svg($selectedID : Text; $visits : Object) : Text
 		If ($lx<8)
 			$lx:=8
 		End if
-		If ($lx>$width-176)
+		If ($lx>($width-176))
 			$lx:=$width-176
 		End if
 		If ($ly<8)
@@ -134,22 +134,23 @@ Function svg($selectedID : Text; $visits : Object) : Text
 	return $svg
 
 Function picture($selectedID : Text; $visits : Object) : Picture
-	var $svg : Text
+	var $svg; $dom : Text
 	var $picture : Picture
 	$svg:=cs.POIRegistry.new().svg($selectedID; $visits)
-	SVG EXPORT TO PICTURE($svg; $picture; 1)
+	// SVG EXPORT TO PICTURE takes an XML tree reference, not SVG source text.
+	$dom:=DOM Parse XML variable($svg)
+	SVG EXPORT TO PICTURE($dom; $picture)
+	DOM CLOSE XML($dom)
 	return $picture
 
 Function visitedCount($visits : Object) : Integer
 	var $count : Integer
 	var $id : Text
-	ARRAY TEXT($keys; 0)
 	$count:=0
 	If ($visits=Null)
 		return 0
 	End if
-	OB GET PROPERTY NAMES($visits; $keys)
-	For each ($id; $keys)
+	For each ($id; OB Keys($visits))
 		If (Value type($visits[$id])=Is boolean)
 			If ($visits[$id])
 				$count:=$count+1

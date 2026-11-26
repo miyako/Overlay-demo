@@ -4,6 +4,8 @@
 // back to the form's own process.
 
 #DECLARE($result : Object)
-If (Storage.tourOpen=True)
-	CALL FORM(Storage.tourWindow; Formula(Tour_apply_result($1)); $result)
+If (Storage.tour#Null)
+	If (Storage.tour.open=True)
+		CALL FORM(Storage.tour.window; Formula(Tour_apply_result($1)); $result)
+	End if
 End if
